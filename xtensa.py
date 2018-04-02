@@ -186,6 +186,7 @@ class Instr(object):
 	fmt_BRI8_imm	= (3, (Operand(Operand.REG, 4, 8), Operand(Operand.IMM, 4, 12, xlate = b4const), Operand(Operand.RELA, 8, 16)))
 	fmt_BRI8_immu	= (3, (Operand(Operand.REG, 4, 8), Operand(Operand.IMM, 4, 12, xlate = b4constu), Operand(Operand.RELA, 8, 16)))
 	fmt_BRI12	= (3, (Operand(Operand.REG, 4, 8), Operand(Operand.RELA, 12, 12)))
+	fmt_BRI12_imm	= (3, (Operand(Operand.REG, 4, 8), Operand(Operand.IMM, 4, 12)))
 	fmt_CALL	= (3, (Operand(Operand.RELA, 18, 6),))
 	fmt_CALL_sh	= (3, (Operand(Operand.RELAL, 18, 6),))
 	fmt_CALLX	= (3, (Operand(Operand.REG, 4, 8),))
@@ -300,8 +301,10 @@ class XtensaProcessor(processor_t):
 		("bnez",   0x000056, 0x0000ff, Instr.fmt_BRI12 ),
 		("break",  0x004000, 0xfff00f, Instr.fmt_RRR_2imm ),
 		("call0",  0x000005, 0x00003f, Instr.fmt_CALL_sh, CF_CALL ),
+        ("call8",  0x000025, 0x00003f, Instr.fmt_CALL_sh, CF_CALL ),
 		("callx0", 0x0000c0, 0xfff0ff, Instr.fmt_CALLX, CF_CALL | CF_JUMP ),
 		("dsync",  0x002030, 0xffffff, Instr.fmt_NONE ),
+		("entry",  0x000036, 0x0000ff, Instr.fmt_BRI12_imm ),
 		("esync",  0x002020, 0xffffff, Instr.fmt_NONE ),
 		("extui",  0x040000, 0x0e000f, Instr.fmt_RRR_extui ),
 		("extw",   0x0020d0, 0xffffff, Instr.fmt_NONE ),
@@ -329,6 +332,7 @@ class XtensaProcessor(processor_t):
 		("nop",    0x0020f0, 0xffffff, Instr.fmt_NONE ),
 		("or",     0x200000, 0xff000f, Instr.fmt_RRR ),
 		("ret",    0x000080, 0xffffff, Instr.fmt_NONE, CF_STOP ),
+        ("retw.n", 0x00f01d, 0x00ffff, Instr.fmt_NNONE, CF_STOP),
 		("rfe",    0x003000, 0xffffff, Instr.fmt_NONE, CF_STOP ),
 		("rfi",    0x003010, 0xfff0ff, Instr.fmt_RRR_1imm, CF_STOP ),
 		("rsil",   0x006000, 0xfff00f, Instr.fmt_RRR_immr ),
